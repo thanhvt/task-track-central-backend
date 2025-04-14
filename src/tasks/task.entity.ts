@@ -5,9 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ITask } from './interfaces/task.interface';
 
 @Entity('tasks')
-export class Task {
+export class Task implements ITask {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,29 +27,29 @@ export class Task {
   @Column()
   priority: string;
 
-  @Column({ type: 'timestamp', nullable: true })
-  startDate: Date;
+  @Column({ type: 'datetime', nullable: true })
+  startDate?: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  endDate: Date;
+  @Column({ type: 'datetime', nullable: true })
+  endDate?: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  dueDate: Date;
+  @Column({ type: 'datetime', nullable: true })
+  dueDate?: Date;
 
   @Column()
   frequency: string;
 
   @Column({ nullable: true })
-  result: string;
+  result?: string;
 
-  @Column('text', { array: true })
+  @Column('simple-array')
   relatedProjects: string[];
 
-  @Column('text', { array: true })
+  @Column('simple-array')
   relatedDepartments: string[];
 
   @Column({ nullable: true })
-  jiraId: string;
+  jiraId?: string;
 
   @Column()
   assignee: string;

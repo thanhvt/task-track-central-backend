@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
+import { ITaskDto } from './interfaces/task.interface';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -29,7 +30,7 @@ export class TasksController {
   @Get()
   @ApiOperation({ summary: 'Get all tasks' })
   @ApiResponse({ status: 200, description: 'Return all tasks', type: [Task] })
-  async getAllTasks(): Promise<Task[]> {
+  async getAllTasks(): Promise<ITaskDto[]> {
     try {
       return await this.tasksService.getAllTasks();
     } catch (error) {
@@ -42,7 +43,7 @@ export class TasksController {
   @ApiParam({ name: 'id', description: 'Task ID' })
   @ApiResponse({ status: 200, description: 'Return the task', type: Task })
   @ApiResponse({ status: 404, description: 'Task not found' })
-  async getTaskById(@Param('id') id: string): Promise<Task> {
+  async getTaskById(@Param('id') id: string): Promise<ITaskDto> {
     try {
       return await this.tasksService.getTaskById(id);
     } catch (error) {
@@ -59,7 +60,7 @@ export class TasksController {
     type: Task,
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async createTask(@Body() taskData: Partial<Task>): Promise<Task> {
+  async createTask(@Body() taskData: ITaskDto): Promise<ITaskDto> {
     try {
       return await this.tasksService.createTask(taskData);
     } catch (error) {
@@ -79,8 +80,8 @@ export class TasksController {
   @ApiResponse({ status: 404, description: 'Task not found' })
   async updateTask(
     @Param('id') id: string,
-    @Body() taskData: Partial<Task>,
-  ): Promise<Task> {
+    @Body() taskData: Partial<ITaskDto>,
+  ): Promise<ITaskDto> {
     try {
       return await this.tasksService.updateTask(id, taskData);
     } catch (error) {
