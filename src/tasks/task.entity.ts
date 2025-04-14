@@ -18,7 +18,7 @@ export class Task {
   title: string;
 
   @Column()
-  content: string;
+  taskContent: string;
 
   @Column()
   status: string;

@@ -3,7 +3,7 @@ INSERT INTO tasks (
   id,
   "taskType",
   title,
-  content,
+  taskContent,
   status,
   priority,
   "startDate",

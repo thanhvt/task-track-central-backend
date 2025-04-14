@@ -8,7 +8,7 @@ export class SeedTasks1744426280099 implements MigrationInterface {
                 id,
                 "taskType",
                 title,
-                content,
+                taskContent,
                 status,
                 priority,
                 "startDate",

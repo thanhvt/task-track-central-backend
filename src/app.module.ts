@@ -10,36 +10,31 @@ import * as path from 'path';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
+      cache: true,
+      expandVariables: true,
+      ignoreEnvFile: false,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const ssl = configService.get('DB_SSL') === 'true';
-        const caCertPath = configService.get('DB_CA_CERT');
 
-        if (ssl && !caCertPath) {
-          throw new Error('DB_CA_CERT is required when DB_SSL is true');
-        }
-
-        const sslConfig = ssl
-          ? {
-              rejectUnauthorized: true,
-              ca: fs
-                .readFileSync(path.join(process.cwd(), caCertPath as string))
-                .toString(),
-            }
-          : undefined;
+        // Ensure port is properly parsed as a number
+        const dbPort = parseInt(configService.get('DB_PORT', '1433'), 10);
 
         return {
-          type: 'postgres',
-          host: configService.get('DB_HOST', 'localhost'),
-          port: configService.get('DB_PORT', 5432),
-          username: configService.get('DB_USERNAME', 'postgres'),
-          password: configService.get('DB_PASSWORD', 'postgres'),
-          database: configService.get('DB_DATABASE', 'task_track_central'),
+          type: 'mssql',
+          host: configService.get('DB_HOST', '10.1.139.55'),
+          port: dbPort,
+          username: configService.get('DB_USERNAME', 'QLPhongGym'),
+          password: configService.get('DB_PASSWORD', 'QLPhongGym'),
+          database: configService.get('DB_DATABASE', 'QLPhongGym'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: configService.get('NODE_ENV') !== 'production',
-          ssl: sslConfig,
+          synchronize: false, // Disable automatic schema synchronization
+          options: {
+            encrypt: false,
+            trustServerCertificate: true,
+          },
         };
       },
       inject: [ConfigService],

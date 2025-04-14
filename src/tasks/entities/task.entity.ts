@@ -18,7 +18,7 @@ export class Task {
   title: string;
 
   @Column()
-  content: string;
+  taskContent: string;
 
   @Column({ default: 'todo' })
   status: string;
@@ -26,13 +26,13 @@ export class Task {
   @Column({ default: 'medium' })
   priority: string;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   startDate: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   endDate: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   dueDate: Date;
 
   @Column()
@@ -41,11 +41,11 @@ export class Task {
   @Column({ nullable: true })
   result: string;
 
-  @Column('text', { array: true })
-  relatedProjects: string[];
+  @Column('nvarchar', { nullable: true })
+  relatedProjects: string;
 
-  @Column('text', { array: true })
-  relatedDepartments: string[];
+  @Column('nvarchar', { nullable: true })
+  relatedDepartments: string;
 
   @Column({ nullable: true })
   jiraId: string;

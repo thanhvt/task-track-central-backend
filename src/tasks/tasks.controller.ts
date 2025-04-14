@@ -19,7 +19,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
-import { Task } from './task.entity';
+import { TaskDto } from './dto/task.dto';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -28,8 +28,8 @@ export class TasksController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tasks' })
-  @ApiResponse({ status: 200, description: 'Return all tasks', type: [Task] })
-  async getAllTasks(): Promise<Task[]> {
+  @ApiResponse({ status: 200, description: 'Return all tasks', type: [TaskDto] })
+  async getAllTasks(): Promise<TaskDto[]> {
     try {
       return await this.tasksService.getAllTasks();
     } catch (error) {
@@ -40,9 +40,9 @@ export class TasksController {
   @Get(':id')
   @ApiOperation({ summary: 'Get task by id' })
   @ApiParam({ name: 'id', description: 'Task ID' })
-  @ApiResponse({ status: 200, description: 'Return the task', type: Task })
+  @ApiResponse({ status: 200, description: 'Return the task', type: TaskDto })
   @ApiResponse({ status: 404, description: 'Task not found' })
-  async getTaskById(@Param('id') id: string): Promise<Task> {
+  async getTaskById(@Param('id') id: string): Promise<TaskDto> {
     try {
       return await this.tasksService.getTaskById(id);
     } catch (error) {
@@ -52,14 +52,14 @@ export class TasksController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new task' })
-  @ApiBody({ type: Task })
+  @ApiBody({ type: TaskDto })
   @ApiResponse({
     status: 201,
     description: 'The task has been successfully created',
-    type: Task,
+    type: TaskDto,
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async createTask(@Body() taskData: Partial<Task>): Promise<Task> {
+  async createTask(@Body() taskData: TaskDto): Promise<TaskDto> {
     try {
       return await this.tasksService.createTask(taskData);
     } catch (error) {
@@ -70,17 +70,17 @@ export class TasksController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a task' })
   @ApiParam({ name: 'id', description: 'Task ID' })
-  @ApiBody({ type: Task })
+  @ApiBody({ type: TaskDto })
   @ApiResponse({
     status: 200,
     description: 'The task has been successfully updated',
-    type: Task,
+    type: TaskDto,
   })
   @ApiResponse({ status: 404, description: 'Task not found' })
   async updateTask(
     @Param('id') id: string,
-    @Body() taskData: Partial<Task>,
-  ): Promise<Task> {
+    @Body() taskData: Partial<TaskDto>,
+  ): Promise<TaskDto> {
     try {
       return await this.tasksService.updateTask(id, taskData);
     } catch (error) {

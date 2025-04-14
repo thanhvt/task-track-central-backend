@@ -10,17 +10,17 @@ if (!caCertPath) {
 }
 
 export default new DataSource({
-  type: 'postgres',
+  type: 'mssql',
   host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || '5432'),
+  port: parseInt(process.env.DB_PORT || '1433'),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],
   synchronize: false,
-  ssl: {
-    ca: fs.readFileSync(caCertPath).toString(),
-    rejectUnauthorized: true,
+  options: {
+    encrypt: false,
+    trustServerCertificate: true,
   },
 });
