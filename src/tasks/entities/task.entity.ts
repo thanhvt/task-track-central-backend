@@ -58,4 +58,7 @@ export class Task {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column()
+  mandays: string;
 }

@@ -16,4 +16,5 @@ export class TaskDto {
   assignee: string;
   createdAt?: Date;
   updatedAt?: Date;
+  mandays: string;
 }
