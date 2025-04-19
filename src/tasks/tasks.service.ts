@@ -77,26 +77,26 @@ export class TasksService {
     }
 
     if (filters.project) {
-      queryBuilder.andWhere('task.project = :project', {
+      queryBuilder.andWhere('task.relatedProjects = :project', {
         project: filters.project,
       });
     }
 
     if (filters.department) {
-      queryBuilder.andWhere('task.department = :department', {
+      queryBuilder.andWhere('task.relatedDepartments = :department', {
         department: filters.department,
       });
     }
 
     if (filters.taskTypes && filters.taskTypes.length > 0) {
-      queryBuilder.andWhere('task.type IN (:...taskTypes)', {
+      queryBuilder.andWhere('task.taskType IN (:...taskTypes)', {
         taskTypes: filters.taskTypes,
       });
     }
 
     if (filters.months && filters.months.length > 0) {
       queryBuilder.andWhere(
-        'EXTRACT(MONTH FROM task.dueDate) IN (:...months)',
+        'MONTH(task.dueDate) IN (:...months)',
         {
           months: filters.months,
         },
