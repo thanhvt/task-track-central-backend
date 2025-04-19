@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { Task } from '../tasks/entities/task.entity';
-import * as fs from 'fs';
 
 dotenv.config();
 
