@@ -36,6 +36,10 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
   console.log(`Swagger documentation: http://localhost:${port}/${swaggerPath}`);
-  console.log('Environment variables:', { DB_HOST: process.env.DB_HOST, NODE_ENV: process.env.NODE_ENV, PORT: process.env.PORT });
+  console.log('Environment variables:', {
+    DB_HOST: process.env.DB_HOST,
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+  });
 }
 bootstrap();

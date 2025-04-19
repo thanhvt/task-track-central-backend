@@ -20,6 +20,11 @@ import {
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { TaskDto } from './dto/task.dto';
+import { TaskPagingRequest, PaginatedResponse } from './dto/pagination.dto';
+import {
+  TaskPagingRequestSwagger,
+  PaginatedResponseSwagger,
+} from './dto/pagination.swagger';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -28,12 +33,52 @@ export class TasksController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tasks' })
-  @ApiResponse({ status: 200, description: 'Return all tasks', type: [TaskDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Return all tasks',
+    type: [TaskDto],
+  })
   async getAllTasks(): Promise<TaskDto[]> {
     try {
       return await this.tasksService.getAllTasks();
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      if (error instanceof Error) {
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+      throw new HttpException(
+        'An error occurred',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('tasksPaging')
+  @ApiOperation({ summary: 'Get paginated tasks with filters' })
+  @ApiBody({ type: TaskPagingRequestSwagger })
+  @ApiResponse({
+    status: 200,
+    description: 'Return paginated tasks with filters',
+    type: PaginatedResponseSwagger,
+  })
+  async getTasksPaging(
+    @Body() request: TaskPagingRequest,
+  ): Promise<PaginatedResponse<TaskDto>> {
+    try {
+      return await this.tasksService.getTasksPaging(request);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+      throw new HttpException(
+        'An error occurred',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
