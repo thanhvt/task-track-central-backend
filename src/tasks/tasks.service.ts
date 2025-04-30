@@ -77,30 +77,33 @@ export class TasksService {
     }
 
     if (filters.project) {
-      queryBuilder.andWhere('task.relatedProjects = :project', {
-        project: filters.project,
-      });
+      queryBuilder.andWhere(
+        'EXISTS (SELECT 1 FROM OPENJSON(task.relatedProjects) WHERE value = :project)',
+        {
+          project: filters.project,
+        },
+      );
     }
-
+ 
     if (filters.department) {
-      queryBuilder.andWhere('task.relatedDepartments = :department', {
-        department: filters.department,
-      });
+      queryBuilder.andWhere(
+        'EXISTS (SELECT 1 FROM OPENJSON(task.relatedDepartments) WHERE value = :department)',
+        {
+          department: filters.department,
+        },
+      );
     }
-
+ 
     if (filters.taskTypes && filters.taskTypes.length > 0) {
       queryBuilder.andWhere('task.taskType IN (:...taskTypes)', {
         taskTypes: filters.taskTypes,
       });
     }
-
+ 
     if (filters.months && filters.months.length > 0) {
-      queryBuilder.andWhere(
-        'MONTH(task.dueDate) IN (:...months)',
-        {
-          months: filters.months,
-        },
-      );
+      queryBuilder.andWhere('MONTH(task.startDate) IN (:...months)', {
+        months: filters.months,
+      });
     }
   }
 
